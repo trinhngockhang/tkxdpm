@@ -18,7 +18,7 @@ public class ListRequiredItem {
 	}
 	
 	public ArrayList getItemArr(int id) {
-		 Mariadb dbUtil = new Mariadb();
+			Mariadb dbUtil = new Mariadb();
 		    
 			String sql = "SELECT requiredItem.*, items.name FROM requiredItem, items WHERE listId = ? AND items.id = requiredItem.itemId";
 			ArrayList arr = new ArrayList();

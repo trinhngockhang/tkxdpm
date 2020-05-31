@@ -30,6 +30,17 @@ public class RequiredItemGUI extends JPanel {
 		JPanel thisPanel = this;
 		
 		JButton btnTaoDs = new JButton("Tạo DS");
+		btnTaoDs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				thisPanel.removeAll();
+				System.out.print("vao loz");
+				// Danh sach cac list don hang
+				// AddListItemGUI addItemGUI = new AddListItemGUI(that);
+				// thisPanel.add(addItemGUI);
+				thisPanel.revalidate();
+				thisPanel.repaint();
+			}
+		});
 		btnTaoDs.setBounds(374, 158, 88, 29);
 		add(btnTaoDs);
 		
