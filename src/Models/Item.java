@@ -55,7 +55,6 @@ public class Item {
 		 
 		String sql = "SELECT * FROM items";
 		ArrayList arr = new ArrayList();
-		arr.add(id);
 		
 		ResultSet res = dbUtil.query(sql, arr);
 		try {

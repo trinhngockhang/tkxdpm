@@ -1,10 +1,13 @@
 package Models;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import Database.Mariadb;
+import RequiredItem.AddItemGUI;
 
 public class ListRequiredItem {
 
@@ -53,6 +56,75 @@ public class ListRequiredItem {
 			}
 		return itemArr;
 	}
+	
+	public int createListItem(String name) {
+		int id = 0;
+		Mariadb dbUtil = new Mariadb();
+		// sql insert list name
+		String insertSql = "INSERT INTO listRequiredItem(name) VALUES(?)";
+		ArrayList insertArr = new ArrayList();
+		insertArr.add(name);
+		// sql get last id
+		String getIdSql = "SELECT id FROM listRequiredItem ORDER BY id DESC LIMIT 1";
+		ArrayList getIdArr = new ArrayList();
+		
+		// excute SQL
+		ResultSet insertRes = dbUtil.query(insertSql, insertArr);
+		ResultSet getIdRes = dbUtil.query(getIdSql, getIdArr);
+		try {
+			getIdRes.next();
+			id = getIdRes.getInt("id");
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+	public void saveRequiredItem(int listId, ArrayList itemArr) {
+		Mariadb dbUtil = new Mariadb();
+		
+		String sql = "INSERT INTO requiredItem(itemId, listId, unit, number, day, month, year) VALUES (?,?,?,?,?,?,?)";
+		try {
+			PreparedStatement preparedStatement = Mariadb.conn.prepareStatement(sql);
+			for (int counter = 0; counter < itemArr.size(); counter++) { 	
+				AddItemGUI addItemGUI = (AddItemGUI)  itemArr.get(counter);
+				// id
+				int id = addItemGUI.getId();
+				// unit
+				String unit = addItemGUI.getUnit();
+				// number
+				int number = addItemGUI.getNumber();
+				// day
+				int day = addItemGUI.getDay();
+				// month
+				int month = addItemGUI.getMonth();
+				// year
+				int year = addItemGUI.getYear();
+				// name list
+				System.out.println("Id: " + id + " unit: " + unit + " number " + number + " day " + day + " month " + month + " year " + year );
+				
+				// add to sql
+				preparedStatement.setInt(1, id);
+				preparedStatement.setInt(2, listId);
+				preparedStatement.setString(3, unit);
+				preparedStatement.setInt(4, number);
+				preparedStatement.setInt(5, day);
+				preparedStatement.setInt(6, month);
+				preparedStatement.setInt(7, year);
+				// add item
+				preparedStatement.addBatch();
+		    } 
+			// excute
+			int[] updateCounts = preparedStatement.executeBatch();
+            System.out.println(Arrays.toString(updateCounts));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	public void setItemArr(ArrayList itemArr) {
 		this.itemArr = itemArr;
 	}

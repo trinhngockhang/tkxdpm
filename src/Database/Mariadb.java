@@ -17,7 +17,7 @@ public class Mariadb{
     
     // gi gi fo
     static Statement stmt = null;
-    static Connection conn = null;
+    public static Connection conn = null;
     // connect Db
     public static void connect() throws ClassNotFoundException, SQLException {
     	
